@@ -1,5 +1,7 @@
 /*!
- * jQuery Resizable plugin v1.0.0
+ * jQuery Resizable plugin v1.0.1
+ * 
+ * v1.0.1: Fixed math mistake.
  *
  * Copyright 2012, Thyago Quintas (dev@thyagoquintas.com.br)
  * https://github.com/thyagoquintas/jquery-resizable/
@@ -27,17 +29,15 @@
             var $element = $(this);
            
             var $element_parent = $($element.parents()[0]).addClass('resizable');
-	            var drg_w = $element_parent.outerWidth(),
-	                drg_h = $element_parent.outerHeight(),
-	                pos_y = $element_parent.offset().top + drg_h - e.pageY,
-	                pos_x = $element_parent.offset().left + drg_w - e.pageX;
-	                	
-	            $element.css('z-index', 9999)
-	            $('*').on("mousemove", function(e) {
+            
+                $('*').on("mousemove", function(e) {
 	                onResizing(e);
+	                var pos_y = $element_parent.offset().top,
+	                	pos_x = $element_parent.offset().left;
+
 	                $('.resizable').css({
-	                    'width' :  pos_x + e.pageX,
-	                    'height' : pos_y + e.pageY
+	                    'width' :  e.pageX - pos_x,
+	                    'height' : e.pageY - pos_y
 	                });
 	            }).on("mouseup", function(){
 	              	$(this).unbind('mousemove');
